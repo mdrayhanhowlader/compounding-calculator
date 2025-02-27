@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trading Profit Calculator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #121212;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .calculator-container {
+            background: #1e1e1e;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+            width: 350px;
+            text-align: center;
+            animation: fadeIn 1s ease-in-out;
+        }
+        h1 {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: none;
+            border-radius: 5px;
+            background: #2a2a2a;
+            color: #fff;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            background-color: #ff9800;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background-color: #e68900;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #444;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator-container">
+        <h1>Trading Profit Calculator</h1>
+        <form id="profitForm">
+            <label for="initialCapital">Initial Capital ($):</label>
+            <input type="number" id="initialCapital" required>
+
+            <label for="leverage">Leverage (e.g., 3 for 3x):</label>
+            <input type="number" id="leverage" required>
+
+            <label for="startProfit">Starting Daily Profit ($):</label>
+            <input type="number" id="startProfit" required>
+
+            <label for="days">Number of Days:</label>
+            <input type="number" id="days" required>
+
+            <button type="submit">Calculate</button>
+        </form>
+        <div id="result"></div>
+    </div>
+    <script>
+        document.getElementById('profitForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const initialCapital = parseFloat(document.getElementById('initialCapital').value);
+            const leverage = parseFloat(document.getElementById('leverage').value);
+            const startProfit = parseFloat(document.getElementById('startProfit').value);
+            const days = parseInt(document.getElementById('days').value);
+
+            let totalProfit = 0;
+            let currentCapital = initialCapital;
+            let resultHTML = '<table><tr><th>Day</th><th>Daily Profit ($)</th><th>Total Profit ($)</th><th>Total Capital ($)</th></tr>';
+
+            for (let day = 1; day <= days; day++) {
+                let dailyProfitAmount = startProfit + (day - 1); // Increase by $1 each day
+                totalProfit += dailyProfitAmount;
+                currentCapital += dailyProfitAmount;
+
+                resultHTML += `<tr>
+                    <td>${day}</td>
+                    <td>${dailyProfitAmount.toFixed(2)}</td>
+                    <td>${totalProfit.toFixed(2)}</td>
+                    <td>${currentCapital.toFixed(2)}</td>
+                </tr>`;
+            }
+
+            resultHTML += '</table>';
+            document.getElementById('result').innerHTML = resultHTML;
+        });
+    </script>
+</body>
+</html>
